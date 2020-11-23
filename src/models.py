@@ -3,22 +3,6 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Enum, Boolean, Text,
 
 db = SQLAlchemy()
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     email = db.Column(db.String(120), unique=True, nullable=False)
-#     password = db.Column(db.String(80), unique=False, nullable=False)
-#     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-
-#     def __repr__(self):
-#         return '<User %r>' % self.username
-
-#     def serialize(self):
-#         return {
-#             "id": self.id,
-#             "email": self.email,
-#             # do not serialize the password, its a security breach
-#         }
-
 written_by = Table("written_by", db.Model.metadata,
     Column("id_author", Integer, ForeignKey("author.id")),
     Column("id_book", Integer, ForeignKey("book.id"))
@@ -45,6 +29,29 @@ class Review(db.Model):
     book = db.relationship("book", back_populates="readers_reviews")
     reader = db.relationship("reader", back_populates="books_reviews")
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "id_reader": self.id_reader,
+            "id_book": self.id_book,
+            "stars": self.stars,
+            "review": self.review
+        }
+    
+    def read_all():
+        reviews = Review.query.all()
+        return reviews.serialize()
+
+    @classmethod
+    def read_by_reader(cls, id_reader_input):
+        review = Review.query.filter_by(id_reader = id_reader_input)
+        return review.serialize()
+
+    @classmethod
+    def read_by_book(cls, id_book_input):
+        review = Review.query.filter_by(id_book = id_book_input)
+        return review.serialize()
+
 class Shelf(db.Model):
     __tablename__= "shelf"
     id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
@@ -54,6 +61,21 @@ class Shelf(db.Model):
     book = db.relationship("book", back_populates="readers_shelves")
     reader = db.relationship("reader", back_populates="books_shelves")
 
+    def serialize(self):
+        return {
+            "id_reader": self.id_reader,
+            "id_book": self.id_book,
+            "shelf_name": self.shelf_name
+        }
+    
+    def read_all():
+        shelves = Shelf.query.all()
+        return shelves.serialize()
+
+    @classmethod
+    def read(cls, id_reader_input):
+        shelf = Shelf.query.filter_by(id_reader = id_reader_input)
+        return shelf.serialize()
 
 class Reader(db.Model):
     __tablename__= "reader"
@@ -64,12 +86,30 @@ class Reader(db.Model):
     is_active = Column(Boolean(), nullable=False)
     name = Column(String(255), nullable=True)
     description = Column(Text(), nullable=True)
-    address = Column(String(255), nullable=True)
     # relations
     orders = db.relationship("order", lazy = True)
     books_reviews = db.relationship("review", back_populates="reader")
     books_shelves = db.relationship("shelf", back_populates="reader")
     readers = db.relationship("reader", secondary=follower, primaryjoin=id == follower.c.id_follower, secondaryjoin=id == follower.c.id_followed, back_populates="readers")
+    
+    def serialize(self):
+        return {
+            "id": self.id,
+            "username": self.username,
+            "email": self.email,
+            "name": self.name,
+            "description": self.description,
+            "orders": self.orders
+        }
+
+    def read_all():
+        readers = Reader.query.all()
+        return readers.serialize()
+
+    @classmethod
+    def read(cls, username_input):
+        reader = Reader.query.filter_by(username = username_input)
+        return reader.serialize()
 
 class Book(db.Model):
     __tablename__= "book"
@@ -86,6 +126,26 @@ class Book(db.Model):
     authors = db.relationship("author", secondary=written_by, back_populates="books")
     orders = db.relationship("order", secondary=order_line, back_populates="books")
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "image": self.username,
+            "title": self.email,
+            "synopsis": self.name,
+            "format_type": self.description,
+            "genre": self.genre,
+            "price": self.price
+        }
+    
+    def read_all():
+        books = Book.query.all()
+        return books.serialize()
+
+    @classmethod
+    def read(cls, title_input):
+        book = Book.query.filter_by(title = title_input)
+        return book.serialize()
+
 class Author(db.Model):
     __tablename__ = "author"
     id = Column(Integer, primary_key=True)
@@ -94,9 +154,42 @@ class Author(db.Model):
     image = Column(String(255), nullable=True)
     books = db.relationship("book", secondary=written_by, back_populates="authors")
 
+    def serialize(self):
+        return {
+            "id": self.id,
+            "name": self.username,
+            "biography": self.email,
+            "image": self.name,
+        }
+    
+    def read_all():
+        authors = Author.query.all()
+        return authors.serialize()
+
+    @classmethod
+    def read(cls, name_input):
+        author = Author.query.filter_by(name = name_input)
+        return author.serialize()
+
 class Order(db.Model):
     __tablename__= "order"
     id = Column(Integer, primary_key=True)
     final_price =  Column(Float(), nullable=False)
     reader_id = Column(Integer, ForeignKey("reader.id"))
     books = db.relationship("book", secondary=order_line, back_populates="orders")
+
+    def serialize(self):
+        return {
+            "id": self.id,
+            "final_price": self.username,
+            "reader_id": self.reader_id
+        }
+
+    def read_all():
+        orders = Order.query.all()
+        return orders.serialize()
+
+    @classmethod
+    def read(cls, reader_id_input):
+        order = Order.query.filter_by(reader_id = reader_id_input)
+        return order.serialize()
