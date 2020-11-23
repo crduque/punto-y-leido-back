@@ -26,8 +26,8 @@ class Review(db.Model):
     stars = Column(Enum("1", "2", "3", "4", "5"), nullable=False)
     review = Column(Text(), nullable=True)
     # relations
-    book = db.relationship("book", back_populates="readers_reviews")
-    reader = db.relationship("reader", back_populates="books_reviews")
+    book_review = db.relationship("Book", back_populates="readers_reviews")
+    reader_review = db.relationship("Reader", back_populates="books_reviews")
 
     def serialize(self):
         return {
@@ -58,8 +58,8 @@ class Shelf(db.Model):
     id_book = Column(Integer, ForeignKey("book.id"), primary_key=True)
     shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), nullable=False)
     # relations
-    book = db.relationship("book", back_populates="readers_shelves")
-    reader = db.relationship("reader", back_populates="books_shelves")
+    book_shelf = db.relationship("Book", back_populates="readers_shelves")
+    reader_shelf = db.relationship("Reader", back_populates="books_shelves")
 
     def serialize(self):
         return {
@@ -87,10 +87,10 @@ class Reader(db.Model):
     name = Column(String(255), nullable=True)
     description = Column(Text(), nullable=True)
     # relations
-    orders = db.relationship("order", lazy = True)
-    books_reviews = db.relationship("review", back_populates="reader")
-    books_shelves = db.relationship("shelf", back_populates="reader")
-    readers = db.relationship("reader", secondary=follower, primaryjoin=id == follower.c.id_follower, secondaryjoin=id == follower.c.id_followed, back_populates="readers")
+    orders = db.relationship("Order", lazy = True)
+    books_reviews = db.relationship("Review", back_populates="reader_review")
+    books_shelves = db.relationship("Shelf", back_populates="reader_shelf")
+    readers = db.relationship("Reader", secondary=follower, primaryjoin=id == follower.c.id_follower, secondaryjoin=id == follower.c.id_followed, back_populates="readers")
     
     def serialize(self):
         return {
@@ -114,17 +114,17 @@ class Reader(db.Model):
 class Book(db.Model):
     __tablename__= "book"
     id = Column(Integer, primary_key=True)
-    image = Column(String(255), nullable=True)
+    image = Column(Text(), nullable=True)
     title = Column(String(120), nullable=False)
     synopsis = Column(Text(), nullable=False)
     format_type = Column(Enum("Tapa dura","Bolsillo","Ebook","Ilustrado","Tapa blanda"), nullable=False)
     genre = Column(Enum("Histórica","Romántica y erótica","Thriller","Ciencia ficción y fantástica","Biográfica","Juvenil","Novela gráfica", "Clásicos"), nullable=False)
     price = Column(Float(), nullable=False)
     # relations
-    readers_reviews = db.relationship("review", back_populates="book")
-    readers_shelves = db.relationship("shelf", back_populates="book")
-    authors = db.relationship("author", secondary=written_by, back_populates="books")
-    orders = db.relationship("order", secondary=order_line, back_populates="books")
+    readers_reviews = db.relationship("Review", back_populates="book_review")
+    readers_shelves = db.relationship("Shelf", back_populates="book_shelf")
+    authors = db.relationship("Author", secondary=written_by, back_populates="books")
+    orders = db.relationship("Order", secondary=order_line, back_populates="books")
 
     def serialize(self):
         return {
@@ -151,15 +151,15 @@ class Author(db.Model):
     id = Column(Integer, primary_key=True)
     name = Column(String(120), nullable=False)
     biography = Column(Text(), nullable=False)
-    image = Column(String(255), nullable=True)
-    books = db.relationship("book", secondary=written_by, back_populates="authors")
+    image = Column(Text(), nullable=True)
+    books = db.relationship("Book", secondary=written_by, back_populates="authors")
 
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.username,
-            "biography": self.email,
-            "image": self.name,
+            "name": self.name,
+            "biography": self.biography,
+            "image": self.image,
         }
     
     def read_all():
@@ -176,7 +176,7 @@ class Order(db.Model):
     id = Column(Integer, primary_key=True)
     final_price =  Column(Float(), nullable=False)
     reader_id = Column(Integer, ForeignKey("reader.id"))
-    books = db.relationship("book", secondary=order_line, back_populates="orders")
+    books = db.relationship("Book", secondary=order_line, back_populates="orders")
 
     def serialize(self):
         return {
