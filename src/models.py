@@ -4,18 +4,18 @@ from sqlalchemy import Column, ForeignKey, Integer, String, Enum, Boolean, Text,
 db = SQLAlchemy()
 
 written_by = Table("written_by", db.Model.metadata,
-    Column("id_author", Integer, ForeignKey("author.id")),
-    Column("id_book", Integer, ForeignKey("book.id"))
+    Column("id_author", Integer, ForeignKey("author.id"), primary_key=True),
+    Column("id_book", Integer, ForeignKey("book.id"), primary_key=True)
 )
 
 order_line = Table("order_line", db.Model.metadata,
-    Column("id_book", Integer, ForeignKey("book.id")),
-    Column("id_order", Integer, ForeignKey("order.id"))
+    Column("id_book", Integer, ForeignKey("book.id"), primary_key=True),
+    Column("id_order", Integer, ForeignKey("order.id"), primary_key=True)
 )
 
 follower = Table("follower", db.Model.metadata,
-    Column("id_follower", Integer, ForeignKey("reader.id")),
-    Column("id_followed", Integer, ForeignKey("reader.id"))
+    Column("id_follower", Integer, ForeignKey("reader.id"), primary_key=True),
+    Column("id_followed", Integer, ForeignKey("reader.id"), primary_key=True)
 )
 
 class Review(db.Model):

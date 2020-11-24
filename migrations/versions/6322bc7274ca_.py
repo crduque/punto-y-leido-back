@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 856e9386015c
+Revision ID: 6322bc7274ca
 Revises: 
-Create Date: 2020-11-23 15:53:19.637432
+Create Date: 2020-11-24 02:28:08.361054
 
 """
 from alembic import op
@@ -10,7 +10,7 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '856e9386015c'
+revision = '6322bc7274ca'
 down_revision = None
 branch_labels = None
 depends_on = None
@@ -48,10 +48,11 @@ def upgrade():
     sa.UniqueConstraint('username')
     )
     op.create_table('follower',
-    sa.Column('id_follower', sa.Integer(), nullable=True),
-    sa.Column('id_followed', sa.Integer(), nullable=True),
+    sa.Column('id_follower', sa.Integer(), nullable=False),
+    sa.Column('id_followed', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_followed'], ['reader.id'], ),
-    sa.ForeignKeyConstraint(['id_follower'], ['reader.id'], )
+    sa.ForeignKeyConstraint(['id_follower'], ['reader.id'], ),
+    sa.PrimaryKeyConstraint('id_follower', 'id_followed')
     )
     op.create_table('order',
     sa.Column('id', sa.Integer(), nullable=False),
@@ -79,16 +80,18 @@ def upgrade():
     sa.PrimaryKeyConstraint('id_reader', 'id_book')
     )
     op.create_table('written_by',
-    sa.Column('id_author', sa.Integer(), nullable=True),
-    sa.Column('id_book', sa.Integer(), nullable=True),
+    sa.Column('id_author', sa.Integer(), nullable=False),
+    sa.Column('id_book', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_author'], ['author.id'], ),
-    sa.ForeignKeyConstraint(['id_book'], ['book.id'], )
+    sa.ForeignKeyConstraint(['id_book'], ['book.id'], ),
+    sa.PrimaryKeyConstraint('id_author', 'id_book')
     )
     op.create_table('order_line',
-    sa.Column('id_book', sa.Integer(), nullable=True),
-    sa.Column('id_order', sa.Integer(), nullable=True),
+    sa.Column('id_book', sa.Integer(), nullable=False),
+    sa.Column('id_order', sa.Integer(), nullable=False),
     sa.ForeignKeyConstraint(['id_book'], ['book.id'], ),
-    sa.ForeignKeyConstraint(['id_order'], ['order.id'], )
+    sa.ForeignKeyConstraint(['id_order'], ['order.id'], ),
+    sa.PrimaryKeyConstraint('id_book', 'id_order')
     )
     # ### end Alembic commands ###
 
