@@ -49,6 +49,14 @@ def get_author(name_input):
     except:
         return "Author not found", 400
 
+@app.route(/"/profile", methods=["GET"])
+def get_shelves():
+    try:
+        all_shelves = Shelf.read_all_shelves()
+        return jsonify(shelves), 200
+    except
+    return "Self not found", 400
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))

@@ -214,5 +214,48 @@ data = {
             "stars": "4",
             "review": "Historia adelantada a su época, con una autora pionera en la escritura sagaz.",
         },
+    ],
+    "Shelf":[
+        {
+		    "id_reader": 1,
+			"id_book": 12,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 12,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 12,
+			"shelf_name": "Favoritos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 18,
+			"shelf_name": "Favoritos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 12,
+			"shelf_name": "Pendientes"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Pendientes"
+		}
+
     ]
 }

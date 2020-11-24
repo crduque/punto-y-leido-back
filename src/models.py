@@ -47,6 +47,12 @@ class Shelf(db.Model):
     book_shelf = db.relationship("Book", back_populates="readers_shelves")
     reader_shelf = db.relationship("Reader", back_populates="books_shelves")
 
+    @classmethod
+    def read_all_shelves(cls):
+        get_all_shelves = Shelf.query.all()
+        shelves = list(map(lambda x: x.serialize(), get_all_shelves))
+        return shelves
+
     def serialize(self):
         return {
             "id_reader": self.id_reader,
@@ -121,10 +127,12 @@ class Author(db.Model):
             "image": self.image,
         }
     
-    def read_all():
-        authors = Author.query.all()
-        return authors.serialize()
-
+    @classmethod
+    def read_all(cls):
+        get_all_author = Author.query.all()
+        authors = list(map(lambda x: x.serialize(), get_all_author))
+        return authors
+    
     @classmethod
     def read(cls, name_input):
         author = Author.query.filter_by(name = name_input)
