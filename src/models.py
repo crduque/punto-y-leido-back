@@ -37,20 +37,6 @@ class Review(db.Model):
             "stars": self.stars,
             "review": self.review
         }
-    
-    def read_all():
-        reviews = Review.query.all()
-        return reviews.serialize()
-
-    @classmethod
-    def read_by_reader(cls, id_reader_input):
-        review = Review.query.filter_by(id_reader = id_reader_input)
-        return review.serialize()
-
-    @classmethod
-    def read_by_book(cls, id_book_input):
-        review = Review.query.filter_by(id_book = id_book_input)
-        return review.serialize()
 
 class Shelf(db.Model):
     __tablename__= "shelf"
@@ -67,15 +53,6 @@ class Shelf(db.Model):
             "id_book": self.id_book,
             "shelf_name": self.shelf_name
         }
-    
-    def read_all():
-        shelves = Shelf.query.all()
-        return shelves.serialize()
-
-    @classmethod
-    def read(cls, id_reader_input):
-        shelf = Shelf.query.filter_by(id_reader = id_reader_input)
-        return shelf.serialize()
 
 class Reader(db.Model):
     __tablename__= "reader"
@@ -102,15 +79,6 @@ class Reader(db.Model):
             "orders": self.orders
         }
 
-    def read_all():
-        readers = Reader.query.all()
-        return readers.serialize()
-
-    @classmethod
-    def read(cls, username_input):
-        reader = Reader.query.filter_by(username = username_input)
-        return reader.serialize()
-
 class Book(db.Model):
     __tablename__= "book"
     id = Column(Integer, primary_key=True)
@@ -136,15 +104,6 @@ class Book(db.Model):
             "genre": self.genre,
             "price": self.price
         }
-    
-    def read_all():
-        books = Book.query.all()
-        return books.serialize()
-
-    @classmethod
-    def read(cls, title_input):
-        book = Book.query.filter_by(title = title_input)
-        return book.serialize()
 
 class Author(db.Model):
     __tablename__ = "author"
@@ -184,12 +143,3 @@ class Order(db.Model):
             "final_price": self.username,
             "reader_id": self.reader_id
         }
-
-    def read_all():
-        orders = Order.query.all()
-        return orders.serialize()
-
-    @classmethod
-    def read(cls, reader_id_input):
-        order = Order.query.filter_by(reader_id = reader_id_input)
-        return order.serialize()
