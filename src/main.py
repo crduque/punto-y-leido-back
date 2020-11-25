@@ -6,13 +6,17 @@ from flask import Flask, request, jsonify, url_for
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
-from utils import APIException, generate_sitemap
+from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
 from models import db, Reader, Author, Book, Review, Order, Shelf
 from init_database import init_db
+import jwt
+from werkzeug.security import generate_password_hash, check_password_hash
+import datetime
 
 app = Flask(__name__)
 app.url_map.strict_slashes = False
+app.config['SECRET_KEY']= os.environ.get("FLASK_APP_KEY")
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DB_CONNECTION_STRING')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
@@ -32,6 +36,39 @@ def handle_invalid_usage(error):
 @app.route('/')
 def sitemap():
     return generate_sitemap(app)
+
+@app.route('/register', methods=['GET', 'POST'])
+def register():  
+    body = request.get_json()  
+
+    hashed_password = generate_password_hash(body['password'], method='sha256')
+
+    new_user = Reader(id=body['id'], email=body['email'], password=hashed_password, is_active=body["is_active"], username=body["username"], name=body["name"], description=body["description"]) 
+    db.session.add(new_user)  
+    db.session.commit()    
+
+    return jsonify({'message': 'registered successfully'})
+
+@app.route('/readers', methods=['GET'])
+def get_all_readers():  
+   
+   readers = Reader.query.all() 
+
+   result = []   
+
+   for reader in readers:   
+       reader_data = {}   
+       reader_data['id'] = reader.id  
+       reader_data['email'] = reader.email 
+       reader_data["username"] = reader.username
+       reader_data["name"] = reader.name
+       reader_data["description"] = reader.description
+       
+       result.append(reader_data)   
+
+   return jsonify(result)
+
+
 
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
