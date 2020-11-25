@@ -43,7 +43,7 @@ def register():
 
     hashed_password = generate_password_hash(body['password'], method='sha256')
 
-    new_user = Reader(id=body['id'], email=body['email'], password=hashed_password, is_active=body["is_active"], username=body["username"], name=body["name"], description=body["description"]) 
+    new_user = Reader(email=body['email'], password=hashed_password, is_active= True, username=body["username"]) 
     db.session.add(new_user)  
     db.session.commit()    
 
