@@ -37,6 +37,12 @@ class Review(db.Model):
             "stars": self.stars,
             "review": self.review
         }
+    
+    @classmethod
+    def read_all(cls):
+        get_all_reviews = Review.query.all()
+        reviews = list(map(lambda x: x.serialize(), get_all_reviews))
+        return reviews
 
 class Shelf(db.Model):
     __tablename__= "shelf"
@@ -78,6 +84,12 @@ class Reader(db.Model):
             "description": self.description,
             "orders": self.orders
         }
+
+    @classmethod
+    def read_all(cls):
+        get_all_readers = Reader.query.all()
+        readers = list(map(lambda x: x.serialize(), get_all_readers))
+        return readers
 
 class Book(db.Model):
     __tablename__= "book"
@@ -121,9 +133,11 @@ class Author(db.Model):
             "image": self.image,
         }
     
-    def read_all():
-        authors = Author.query.all()
-        return authors.serialize()
+    @classmethod
+    def read_all(cls):
+        get_all_author = Author.query.all()
+        authors = list(map(lambda x: x.serialize(), get_all_author))
+        return authors
 
     @classmethod
     def read(cls, name_input):

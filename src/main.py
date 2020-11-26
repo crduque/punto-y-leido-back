@@ -71,23 +71,28 @@ def get_all_readers():
 @app.route('/reviews', methods=['GET'])
 def get_all_reviews():  
    
-   reviews = Review.query.all()
-#    reader = Reader.query.filter(id = review.id_reader)
+    reviews = Review.read_all()
+    readers = Reader.read_all()
 
-   result = []   
+    result = []   
 
-   for review in reviews:   
-       review_data = {}   
-       review_data['id'] = review.id  
-       review_data['id_reader'] = review.id_reader 
-       review_data["id_book"] = review.id_book
-       review_data["stars"] = review.stars
-       review_data["review"] = review.review
-    #    review_data["username"] = reader.username
+    for review in reviews:
+        for reader in readers:
+            if reader["id"] == review["id_reader"]:
+                print("Readerrrrrrrrrrrrrrrrrrr: ", reader)
+                review_data = {}   
+                review_data['id'] = review["id"] 
+                review_data['id_reader'] = review["id_reader"] 
+                review_data["id_book"] = review["id_book"]
+                review_data["stars"] = review["stars"]
+                review_data["review"] = review["review"]
+                review_data["username"] = reader["username"]
        
-       result.append(review_data)   
+                result.append(review_data)
+    
+    print("Resultadoooooooooooooo: ", result )
 
-   return jsonify(result)
+    return jsonify(result)
 
 
 @app.route('/authors', methods=['GET'])
