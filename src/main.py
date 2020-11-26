@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, make_response
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -49,9 +49,31 @@ def register():
 
     return jsonify({'message': 'registered successfully'})
 
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    auth = request.authorization
+    
+    # luego tendremos que cambiar username por lo que usemos para loguearnos
+    if not auth or not auth.username or not auth.password:
+        return make_response("could not verify first if", 401)
+
+    reader = Reader.query.filter_by(email=auth.username).first()
+
+    hashed_password = generate_password_hash(auth.password, method='sha256')
+
+    # print("Readerrrrrrr: ", check_password_hash(reader.password, auth.password))
+    # print("Readerrrrrrr: ", hashed_password)
+    # print("Authhhhhhhhh: ", auth.password)
+    # print("AAAAAAAAAAAAAAa ",reader.password, hashed_password, hashed_password2)
+
+    if check_password_hash(reader.password, auth.password):
+        token = jwt.encode({'id': reader.id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+        return jsonify({'token' : token.decode('UTF-8')})
+
+    return make_response("could not verify second if", 401)
+
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
-   
    readers = Reader.query.all() 
 
    result = []   
