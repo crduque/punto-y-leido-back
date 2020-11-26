@@ -51,7 +51,6 @@ def register():
 
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
-   
    readers = Reader.query.all() 
 
    result = []   
@@ -70,7 +69,6 @@ def get_all_readers():
 
 @app.route('/reviews', methods=['GET'])
 def get_all_reviews():  
-   
     reviews = Review.read_all()
     readers = Reader.read_all()
 
@@ -79,7 +77,6 @@ def get_all_reviews():
     for review in reviews:
         for reader in readers:
             if reader["id"] == review["id_reader"]:
-                print("Readerrrrrrrrrrrrrrrrrrr: ", reader)
                 review_data = {}   
                 review_data['id'] = review["id"] 
                 review_data['id_reader'] = review["id_reader"] 
@@ -90,9 +87,17 @@ def get_all_reviews():
        
                 result.append(review_data)
     
-    print("Resultadoooooooooooooo: ", result )
-
     return jsonify(result)
+
+# @app.route("/reviews", methods=["POST"])
+# def create_review():
+#     body = request.get_json()  
+
+#     new_review = Review(id=body['id'], id_reader=body["id_reader"], id_book= body["id_book"], stars=body["stars"], review=body["review"]) 
+#     db.session.add(new_review)  
+#     db.session.commit()    
+
+#     return jsonify({'message': 'review created successfully'})
 
 
 @app.route('/authors', methods=['GET'])
