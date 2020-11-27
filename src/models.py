@@ -54,6 +54,13 @@ class Shelf(db.Model):
             "shelf_name": self.shelf_name
         }
 
+    @classmethod
+    def read_by_reader_and_name(cls, shelf_name, reader_id):
+        books_in_shelf = cls.query.filter_by(shelf_name = shelf_name, id_reader = reader_id)
+        shelf = list(map(lambda x: x.serialize(), books_in_shelf))
+        return shelf
+
+
 class Reader(db.Model):
     __tablename__= "reader"
     id = Column(Integer, primary_key=True)
@@ -104,6 +111,12 @@ class Book(db.Model):
             "genre": self.genre,
             "price": self.price
         }
+    
+    @classmethod
+    def read_book(cls, book_id):
+        book = Book.query.filter_by(id=book_id)
+        all_books = list(map(lambda x: x.serialice(), book))
+        return all_books
 
 class Author(db.Model):
     __tablename__ = "author"

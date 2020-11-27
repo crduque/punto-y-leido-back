@@ -68,7 +68,18 @@ def get_all_readers():
 
    return jsonify(result)
 
+@app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
+def get_all_shelves(reader_id, shelf_name):
 
+    books_in_shelf = Shelf.read_by_reader_and_name(shelf_name, reader_id)
+    print('Estanterias ', shelves)
+
+    # books=[]
+
+    # for book in books_in_shelf:
+    #     read_by_id
+    return jsonify(book_in_shelf), 200
+    
 
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
