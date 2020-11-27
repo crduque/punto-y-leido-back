@@ -113,7 +113,7 @@ class Book(db.Model):
         }
     
     @classmethod
-    def read_book(cls, book_id):
+    def read_by_id(cls, book_id):
         book = Book.query.filter_by(id=book_id)
         all_books = list(map(lambda x: x.serialice(), book))
         return all_books
