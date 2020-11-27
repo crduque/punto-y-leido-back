@@ -41,34 +41,26 @@ def sitemap():
 def register():  
     body = request.get_json()  
 
-    hashed_password = generate_password_hash(body['password'], method='sha256')
+    hashed_password = generate_password_hash(body["password"], method="sha256")
 
-    new_user = Reader(email=body['email'], password=hashed_password, is_active= True, username=body["username"]) 
-    db.session.add(new_user)  
-    db.session.commit()    
+    new_user = Reader(email=body['email'], password=hashed_password, is_active= True, username=body["username"])
+
+    Reader.create(new_user)
 
     return jsonify({'message': 'registered successfully'})
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
-    auth = request.authorization
+    body = request.get_json()
     
-    # luego tendremos que cambiar username por lo que usemos para loguearnos
-    if not auth or not auth.username or not auth.password:
+    if not body or not body["email"] or not body["password"]:
         return make_response("could not verify first if", 401)
 
-    reader = Reader.query.filter_by(email=auth.username).first()
+    reader = Reader.read_by_email(body["email"])
 
-    hashed_password = generate_password_hash(auth.password, method='sha256')
-
-    # print("Readerrrrrrr: ", check_password_hash(reader.password, auth.password))
-    # print("Readerrrrrrr: ", hashed_password)
-    # print("Authhhhhhhhh: ", auth.password)
-    # print("AAAAAAAAAAAAAAa ",reader.password, hashed_password, hashed_password2)
-
-    if check_password_hash(reader.password, auth.password):
+    if check_password_hash(reader.password, body["password"]):
         token = jwt.encode({'id': reader.id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-        return jsonify({'token' : token.decode('UTF-8')})
+        return jsonify({'token' : token.decode('UTF-8')}, 200)
 
     return make_response("could not verify second if", 401)
 

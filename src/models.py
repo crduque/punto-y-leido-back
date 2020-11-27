@@ -79,6 +79,14 @@ class Reader(db.Model):
             "orders": self.orders
         }
 
+    def create(new_user):
+        db.session.add(new_user)  
+        db.session.commit()    
+
+    def read_by_email(email):
+        reader = Reader.query.filter_by(email=email).first()
+        return reader
+
 class Book(db.Model):
     __tablename__= "book"
     id = Column(Integer, primary_key=True)
