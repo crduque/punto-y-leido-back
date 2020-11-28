@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
-from models import db, Reader, Author, Book, Review, Order, Shelf
+from models import db, Reader, Author, Book, Review, Order, Shelf, written_by
 from init_database import init_db
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -68,7 +68,32 @@ def get_all_readers():
 
    return jsonify(result)
 
+@app.route('/books', methods=['GET'])
+def get_all_books():  
+    books = Book.read_all()
+    authors = Author.read_all()
+    books_written_by_authors = db.session.query(written_by).all()
 
+    result = []   
+    for book_author in books_written_by_authors:
+        for book in books:
+            for author in authors:
+                if book["id"] == book_author[1]:
+                    if author["id"] == book_author[0]:
+                        book_data = {}   
+                        book_data['id'] = book["id"] 
+                        book_data['title'] = book["title"] 
+                        book_data["image"] = book["image"]
+                        book_data["synopsis"] = book["synopsis"]
+                        book_data["format_type"] = book["format_type"]
+                        book_data["genre"] = book["genre"]
+                        book_data["price"] = book["price"]
+                        book_data["id_author"] = author["id"]
+                        book_data["name_author"] = author["name"]
+            
+                        result.append(book_data)
+    
+    return jsonify(result)
 
 @app.route('/authors', methods=['GET'])
 def get_all_authors():

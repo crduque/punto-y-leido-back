@@ -97,13 +97,19 @@ class Book(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image": self.username,
-            "title": self.email,
-            "synopsis": self.name,
-            "format_type": self.description,
+            "image": self.image,
+            "title": self.title,
+            "synopsis": self.synopsis,
+            "format_type": self.format_type,
             "genre": self.genre,
             "price": self.price
         }
+
+    @classmethod
+    def read_all(cls):
+        all_books = Book.query.all()
+        books = list(map(lambda x: x.serialize(), all_books))
+        return books
 
 class Author(db.Model):
     __tablename__ = "author"
@@ -121,9 +127,11 @@ class Author(db.Model):
             "image": self.image,
         }
     
-    def read_all():
-        authors = Author.query.all()
-        return authors.serialize()
+    @classmethod
+    def read_all(cls):
+        get_all_author = Author.query.all()
+        authors = list(map(lambda x: x.serialize(), get_all_author))
+        return authors
 
     @classmethod
     def read(cls, name_input):
