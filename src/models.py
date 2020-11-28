@@ -42,7 +42,7 @@ class Shelf(db.Model):
     __tablename__= "shelf"
     id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
     id_book = Column(Integer, ForeignKey("book.id"), primary_key=True)
-    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), nullable=False)
+    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), nullable=False, primary_key=True)
     # relations
     book_shelf = db.relationship("Book", back_populates="readers_shelves")
     reader_shelf = db.relationship("Reader", back_populates="books_shelves")
@@ -104,19 +104,19 @@ class Book(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "image": self.username,
-            "title": self.email,
-            "synopsis": self.name,
-            "format_type": self.description,
+            "image": self.image,
+            "title": self.title,
+            "synopsis": self.synopsis,
+            "format_type": self.format_type,
             "genre": self.genre,
             "price": self.price
         }
     
     @classmethod
     def read_by_id(cls, book_id):
-        book = Book.query.filter_by(id=book_id)
-        all_books = list(map(lambda x: x.serialice(), book))
-        return all_books
+        book = Book.query.get(book_id)
+        # all_books = list(map(lambda x: x.serialize(), book))
+        return book.serialize()
 
 class Author(db.Model):
     __tablename__ = "author"
