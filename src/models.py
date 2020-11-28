@@ -42,7 +42,7 @@ class Shelf(db.Model):
     __tablename__= "shelf"
     id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
     id_book = Column(Integer, ForeignKey("book.id"), primary_key=True)
-    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), nullable=False, primary_key=True)
+    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), primary_key=True)
     # relations
     book_shelf = db.relationship("Book", back_populates="readers_shelves")
     reader_shelf = db.relationship("Reader", back_populates="books_shelves")
