@@ -51,24 +51,21 @@ def register():
 
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
-   
-   readers = Reader.query.all() 
+    readers = Reader.read_all() 
+    result = []   
 
-   result = []   
-
-   for reader in readers:   
-       reader_data = {}   
-       reader_data['id'] = reader.id  
-       reader_data['email'] = reader.email 
-       reader_data["username"] = reader.username
-       reader_data["name"] = reader.name
-       reader_data["description"] = reader.description
+    for reader in readers:
+        print(reader) 
+        reader_data = {}   
+        reader_data['id'] = reader["id"]  
+        reader_data['email'] = reader["email"] 
+        reader_data["username"] = reader["username"]
+        reader_data["name"] = reader["name"]
+        reader_data["description"] = reader["description"]
        
-       result.append(reader_data)   
+        result.append(reader_data)   
 
-   return jsonify(result)
-
-
+    return jsonify(result)
 
 @app.route('/authors', methods=['GET'])
 def get_all_authors():

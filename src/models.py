@@ -78,6 +78,12 @@ class Reader(db.Model):
             "description": self.description,
             "orders": self.orders
         }
+    
+    @classmethod
+    def read_all(cls):
+        readers = Reader.query.all()
+        all_readers = list(map(lambda x: x.serialize(), readers))
+        return all_readers
 
 class Book(db.Model):
     __tablename__= "book"
