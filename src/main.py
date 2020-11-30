@@ -79,23 +79,41 @@ def get_all_shelves(reader_id, shelf_name):
     print(books)
 
     return jsonify(books), 200
+
+@app.route('/test', methods=['GET'])
+def read_all_shelves():
+    try:
+        shelves=Shelf.read_all_shelves()
+        return jsonify(shelves), 200
+    except:
+        return 'not foun', 400
+
+@app.route('/<reader_id>/<shelf_name>/<book_id>', methods=['POST'])
+def add_to_shelf(reader_id,shelf_name,book_id):
+
+    new_book_in_shelf=Shelf(id_reader=reader_id, shelf_name=shelf_name, id_book=book_id)
+
+    new_book_in_shelf.add_book_to_shelf()
+
+    return jsonify(new_book_in_shelf.serialize())
+
     
 
-@app.route('/authors', methods=['GET'])
-def get_all_authors():
-    try:
-        all_authors = Author.read_all()
-        return jsonify(all_authors), 200
-    except:
-        return "Do not found authors", 400
+# @app.route('/authors', methods=['GET'])
+# def get_all_authors():
+#     try:
+#         all_authors = Author.read_all()
+#         return jsonify(all_authors), 200
+#     except:
+#         return "Do not found authors", 400
 
-@app.route("/author/<name_input>", methods=["GET"])
-def get_author(name_input):
-    try:
-        author = Author.read(name_input)
-        return jsonify(author), 200
-    except:
-        return "Author not found", 400
+# @app.route("/author/<name_input>", methods=["GET"])
+# def get_author(name_input):
+#     try:
+#         author = Author.read(name_input)
+#         return jsonify(author), 200
+#     except:
+#         return "Author not found", 400
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

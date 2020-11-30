@@ -60,7 +60,18 @@ class Shelf(db.Model):
         shelf = list(map(lambda x: x.serialize(), books_in_shelf))
         return shelf
 
+    @classmethod
+    def read_all_shelves(cls):
+        shelves=Shelf.query.all()
+        all_shelf=list(map(lambda x: x.serialize(), shelves))
+        return all_shelf
 
+    def add_book_to_shelf(self):
+        print("esoty en la funcion")
+        db.session.add(self)
+        db.session.commit()
+        print("termine la funcion")
+    
 class Reader(db.Model):
     __tablename__= "reader"
     id = Column(Integer, primary_key=True)
@@ -134,14 +145,14 @@ class Author(db.Model):
             "image": self.image,
         }
     
-    def read_all():
-        authors = Author.query.all()
-        return authors.serialize()
+    # def read_all():
+    #     authors = Author.query.all()
+    #     return authors.serialize()
 
-    @classmethod
-    def read(cls, name_input):
-        author = Author.query.filter_by(name = name_input)
-        return author.serialize()
+    # @classmethod
+    # def read(cls, name_input):
+    #     author = Author.query.filter_by(name = name_input)
+    #     return author.serialize()
 
 class Order(db.Model):
     __tablename__= "order"
