@@ -145,14 +145,15 @@ class Author(db.Model):
             "image": self.image,
         }
     
-    # def read_all():
-    #     authors = Author.query.all()
-    #     return authors.serialize()
-
-    # @classmethod
-    # def read(cls, name_input):
-    #     author = Author.query.filter_by(name = name_input)
-    #     return author.serialize()
+    @classmethod
+    def read_all(cls):
+        authors = cls.query.all()
+        author = list(map(lambda x: x.serialize(), authors))
+        return author
+    @classmethod
+    def read(cls, name_input):
+        author = cls.query.filter_by(name = name_input)
+        return author.serialize()
 
 class Order(db.Model):
     __tablename__= "order"

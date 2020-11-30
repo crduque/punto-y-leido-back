@@ -99,21 +99,21 @@ def add_to_shelf(reader_id,shelf_name,book_id):
 
     
 
-# @app.route('/authors', methods=['GET'])
-# def get_all_authors():
-#     try:
-#         all_authors = Author.read_all()
-#         return jsonify(all_authors), 200
-#     except:
-#         return "Do not found authors", 400
+@app.route('/authors', methods=['GET'])
+def get_all_authors():
+    try:
+        all_authors = Author.read_all()
+        return jsonify(all_authors), 200
+    except:
+        return "Do not found authors", 400
 
-# @app.route("/author/<name_input>", methods=["GET"])
-# def get_author(name_input):
-#     try:
-#         author = Author.read(name_input)
-#         return jsonify(author), 200
-#     except:
-#         return "Author not found", 400
+@app.route("/author/<name_input>", methods=["GET"])
+def get_author(name_input):
+    try:
+        author = Author.read(name_input)
+        return jsonify(author), 200
+    except:
+        return "Author not found", 400
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
