@@ -97,9 +97,13 @@ def add_to_shelf(reader_id,shelf_name,book_id):
 
     return jsonify(new_book_in_shelf.serialize())
 
-@app.route('/<reader_id>/<shelf_name>/<book_id>' , methods=['DELETE'])
-def delete_book_of_shelf(reader_id,shelf_name,book_id):
-    Shelf.delete_book_on_shelf(reader_id, shelf_name, book_id)
+@app.route('/<id_reader>/<shelf_name>/<id_book>' , methods=['DELETE'])
+def delete_book_of_shelf(id_reader,shelf_name,id_book):
+    try:
+        delete = Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
+        return delete, 200
+    except: 
+        return "Do not found book in this shelf", 400
 
 
 
