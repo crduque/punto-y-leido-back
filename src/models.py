@@ -67,10 +67,14 @@ class Shelf(db.Model):
         return all_shelf
 
     def add_book_to_shelf(self):
-        print("esoty en la funcion")
         db.session.add(self)
         db.session.commit()
-        print("termine la funcion")
+
+    def delete_book_on_shelf(id_reader, id_book, shelf_name):
+        book=Shelf.query.filter_by(id_reader=id_reader, id_book=id_book, shelf_name=shelf_name).first()
+        book.delete()
+        db.session.commit()
+
     
 class Reader(db.Model):
     __tablename__= "reader"

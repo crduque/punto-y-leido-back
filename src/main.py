@@ -97,7 +97,11 @@ def add_to_shelf(reader_id,shelf_name,book_id):
 
     return jsonify(new_book_in_shelf.serialize())
 
-    
+@app.route('/<reader_id>/<shelf_name>/<book_id>' , methods=['DELETE'])
+def delete_book_of_shelf(reader_id,shelf_name,book_id):
+    Shelf.delete_book_on_shelf(reader_id, shelf_name, book_id)
+
+
 
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
