@@ -55,13 +55,13 @@ def login():
     
     if "x-access-tokens" not in request.headers:
         if not body or not body["email"] or not body["password"]:
-            return make_response("El email o la contraseña no son correctas", 401)
+            return make_response("El email o la contraseña no son correctas"), 401
 
         reader = Reader.read_by_email(body["email"])
 
         if check_password_hash(reader.password, body["password"]):
             token = jwt.encode({'id': reader.id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
-            return jsonify({'token' : token.decode('UTF-8')}, 200)
+            return jsonify({'token' : token.decode('UTF-8')}), 200
 
         return make_response("Error de login", 401)
 
