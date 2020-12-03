@@ -76,8 +76,6 @@ def get_all_shelves(reader_id, shelf_name):
     books=[]
     for book in books_in_shelf:
         books.append(Book.read_by_id(book['id_book']))
-    print(books)
-
     return jsonify(books), 200
     
 
