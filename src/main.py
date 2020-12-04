@@ -78,7 +78,7 @@ def get_all_shelves(reader_id, shelf_name):
         books.append(Book.read_by_id(book['id_book']))
     return jsonify(books), 200
 
-@app.route('/test', methods=['GET'])
+@app.route('/shelves_by_id', methods=['GET'])
 def read_all_shelves():
     try:
         shelves=Shelf.read_all_shelves()
@@ -104,9 +104,6 @@ def delete_book_of_shelf(id_reader,shelf_name,id_book):
     else: 
         return delete_book.serialize(), 200
         
-
-
-
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
     try:

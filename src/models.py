@@ -69,7 +69,6 @@ class Shelf(db.Model):
     def add_book_to_shelf(self):
         db.session.add(self)
         db.session.commit()
-
     
     def delete_book_on_shelf( id_reader, shelf_name, id_book ):
         book=Shelf.query.filter_by(id_reader=id_reader, shelf_name=shelf_name, id_book=id_book).first()
