@@ -42,7 +42,7 @@ class Shelf(db.Model):
     __tablename__= "shelf"
     id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
     id_book = Column(Integer, ForeignKey("book.id"), primary_key=True)
-    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), nullable=False)
+    shelf_name = Column(Enum("Comentados","Leídos","Favoritos","Pendientes","Comprados"), primary_key=True)
     # relations
     book_shelf = db.relationship("Book", back_populates="readers_shelves")
     reader_shelf = db.relationship("Reader", back_populates="books_shelves")
@@ -53,6 +53,28 @@ class Shelf(db.Model):
             "id_book": self.id_book,
             "shelf_name": self.shelf_name
         }
+
+    @classmethod
+    def read_by_reader_and_name(cls, shelf_name, reader_id):
+        books_in_shelf = cls.query.filter_by(shelf_name = shelf_name, id_reader = reader_id)
+        shelf = list(map(lambda x: x.serialize(), books_in_shelf))
+        return shelf
+
+    @classmethod
+    def read_all_shelves(cls):
+        shelves=Shelf.query.all()
+        all_shelf=list(map(lambda x: x.serialize(), shelves))
+        return all_shelf
+
+    def add_book_to_shelf(self):
+        db.session.add(self)
+        db.session.commit()
+    
+    def delete_book_on_shelf( id_reader, shelf_name, id_book ):
+        book=Shelf.query.filter_by(id_reader=id_reader, shelf_name=shelf_name, id_book=id_book).first()
+        db.session.delete(book)
+        db.session.commit()
+        return book
 
 class Reader(db.Model):
     __tablename__= "reader"
@@ -117,6 +139,12 @@ class Book(db.Model):
             "genre": self.genre,
             "price": self.price
         }
+    
+    @classmethod
+    def read_by_id(cls, book_id):
+        book = Book.query.get(book_id)
+        # all_books = list(map(lambda x: x.serialize(), book))
+        return book.serialize()
 
     @classmethod
     def read_all(cls):
@@ -142,13 +170,13 @@ class Author(db.Model):
     
     @classmethod
     def read_all(cls):
-        get_all_author = Author.query.all()
-        authors = list(map(lambda x: x.serialize(), get_all_author))
-        return authors
-
+        authors = cls.query.all()
+        author = list(map(lambda x: x.serialize(), authors))
+        return author
+        
     @classmethod
     def read(cls, name_input):
-        author = Author.query.filter_by(name = name_input)
+        author = cls.query.filter_by(name = name_input)
         return author.serialize()
 
 class Order(db.Model):

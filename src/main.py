@@ -110,9 +110,44 @@ def get_all_books():
                         book_data["name_author"] = author["name"]
             
                         result.append(book_data)
-    
-    return jsonify(result)
 
+    return jsonify(result)
+    
+@app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
+def get_all_shelves(reader_id, shelf_name):
+    books_in_shelf = Shelf.read_by_reader_and_name(shelf_name, reader_id)
+
+    books=[]
+    for book in books_in_shelf:
+        books.append(Book.read_by_id(book['id_book']))
+    return jsonify(books), 200
+
+@app.route('/shelves_by_id', methods=['GET'])
+def read_all_shelves():
+    try:
+        shelves=Shelf.read_all_shelves()
+        return jsonify(shelves), 200
+    except:
+        return 'not foun', 400
+
+@app.route('/<reader_id>/<shelf_name>/<book_id>', methods=['POST'])
+def add_to_shelf(reader_id,shelf_name,book_id):
+
+    new_book_in_shelf=Shelf(id_reader=reader_id, shelf_name=shelf_name, id_book=book_id)
+
+    new_book_in_shelf.add_book_to_shelf()
+
+    return jsonify(new_book_in_shelf.serialize())
+
+@app.route('/<id_reader>/<shelf_name>/<id_book>' , methods=['DELETE'])
+def delete_book_of_shelf(id_reader,shelf_name,id_book):
+    delete_book = Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
+    print("libro borrado, ", delete_book)
+    if delete_book is None:
+        return "Do not found book in this shelf", 400
+    else: 
+        return delete_book.serialize(), 200
+        
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
     try:
