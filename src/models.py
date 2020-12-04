@@ -47,6 +47,12 @@ class Shelf(db.Model):
     book_shelf = db.relationship("Book", back_populates="readers_shelves")
     reader_shelf = db.relationship("Reader", back_populates="books_shelves")
 
+    @classmethod
+    def read_all_shelves(cls):
+        get_all_shelves = Shelf.query.all()
+        shelves = list(map(lambda x: x.serialize(), get_all_shelves))
+        return shelves
+
     def serialize(self):
         return {
             "id_reader": self.id_reader,

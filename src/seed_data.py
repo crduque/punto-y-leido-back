@@ -217,49 +217,45 @@ data = {
     ],
     "Shelf":[
         {
-            "id_reader": 1,
-            "id_book" :14,
-            "shelf_name" : "Comentados"
-        },
-        {
-            "id_reader": 1,
-            "id_book" :1,
-            "shelf_name" : "Leídos"
-        },
-        {
-            "id_reader": 2,
-            "id_book" :21,
-            "shelf_name" : "Favoritos"
-        },
-        {
-            "id_reader": 2,
-            "id_book" :12,
-            "shelf_name" : "Pendientes"
-        },
-        {
-            "id_reader": 3,
-            "id_book" :18,
-            "shelf_name" : "Comprados"
-        },
-        {
-            "id_reader": 3,
-            "id_book" :1,
-            "shelf_name" : "Leídos"
-        },
-        {
-            "id_reader": 3,
-            "id_book" :21,
-            "shelf_name" : "Comentados"
-        },
-        {
-            "id_reader": 2,
-            "id_book" :12,
-            "shelf_name" : "Comprados"
-        },
-        {
-            "id_reader": 1,
-            "id_book" :18,
-            "shelf_name" : "Pendientes"
-        }
+		    "id_reader": 1,
+			"id_book": 12,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 12,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Leídos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 12,
+			"shelf_name": "Favoritos"
+		},
+		{
+			"id_reader": 2,
+			"id_book": 18,
+			"shelf_name": "Favoritos"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 12,
+			"shelf_name": "Pendientes"
+		},
+		{
+			"id_reader": 1,
+			"id_book": 18,
+			"shelf_name": "Pendientes"
+		}
+
     ]
 }
