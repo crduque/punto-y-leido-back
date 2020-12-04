@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for
+from flask import Flask, request, jsonify, url_for, make_response
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -41,18 +41,36 @@ def sitemap():
 def register():  
     body = request.get_json()  
 
-    hashed_password = generate_password_hash(body['password'], method='sha256')
+    hashed_password = generate_password_hash(body["password"], method="sha256")
 
-    new_user = Reader(email=body['email'], password=hashed_password, is_active= True, username=body["username"]) 
-    db.session.add(new_user)  
-    db.session.commit()    
+    new_user = Reader(email=body['email'], password=hashed_password, is_active= True, username=body["username"])
 
-    return jsonify({'message': 'registered successfully'})
+    Reader.create(new_user)
+
+    return jsonify({'message': 'registered successfully'}), 200
+
+@app.route("/login", methods=["GET", "POST"])
+def login():
+    body = request.get_json()
+    
+    if "x-access-tokens" not in request.headers:
+        if not body or not body["email"] or not body["password"]:
+            return make_response("El email o la contraseña no son correctas"), 401
+
+        reader = Reader.read_by_email(body["email"])
+
+        if check_password_hash(reader.password, body["password"]):
+            token = jwt.encode({'id': reader.id, 'exp' : datetime.datetime.utcnow() + datetime.timedelta(minutes=30)}, app.config['SECRET_KEY'])
+            return jsonify({'token' : token.decode('UTF-8')}), 200
+
+        return make_response("Error de login", 401)
+
+    else:
+        return make_response("Token válido", 200)
 
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
-   
-   readers = Reader.query.all() 
+   readers = Reader.read_all()
 
    result = []   
 
