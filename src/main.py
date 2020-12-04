@@ -51,9 +51,9 @@ def get_author(name_input):
 
 @app.route("/profile", methods=["GET"])
 def get_shelves():
-    if:
-        all_shelves = Shelf.read_all_shelves()
-        return jsonify(shelves), 200
+    all_shelves = Shelf.read_all_shelves()
+    if all_shelves:
+        return jsonify(all_shelves), 200
     else:
         return "Self not found", 400
 
