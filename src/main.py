@@ -70,7 +70,7 @@ def login():
 
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
-   readers = Reader.query.all() 
+   readers = Reader.read_all()
 
    result = []   
 

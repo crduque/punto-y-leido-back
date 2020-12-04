@@ -87,6 +87,11 @@ class Reader(db.Model):
         reader = Reader.query.filter_by(email=email).first()
         return reader
 
+    @classmethod
+    def read_all(cls):
+        readers = Reader.query.all()
+        return readers
+
 class Book(db.Model):
     __tablename__= "book"
     id = Column(Integer, primary_key=True)
