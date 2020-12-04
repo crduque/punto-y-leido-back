@@ -47,7 +47,7 @@ def register():
 
     Reader.create(new_user)
 
-    return jsonify({'message': 'registered successfully'})
+    return jsonify({'message': 'registered successfully'}), 200
 
 @app.route("/login", methods=["GET", "POST"])
 def login():
