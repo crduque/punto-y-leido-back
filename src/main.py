@@ -99,11 +99,13 @@ def add_to_shelf(reader_id,shelf_name,book_id):
 
 @app.route('/<id_reader>/<shelf_name>/<id_book>' , methods=['DELETE'])
 def delete_book_of_shelf(id_reader,shelf_name,id_book):
-    if id_reader and shelf_name and id_book:
-        Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
-        return "book delete in shelf", 200
-    else: 
+    delete_book = Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
+    print("libro borrado, ", delete_book)
+    if delete_book is None:
         return "Do not found book in this shelf", 400
+    else: 
+        return delete_book.serialize(), 200
+        
 
 
 

@@ -74,7 +74,8 @@ class Shelf(db.Model):
     def delete_book_on_shelf( id_reader, shelf_name, id_book ):
         book=Shelf.query.filter_by(id_reader=id_reader, shelf_name=shelf_name, id_book=id_book).first()
         db.session.delete(book)
-        db.session.commit()    
+        db.session.commit()
+        return book
 
 class Reader(db.Model):
     __tablename__= "reader"
