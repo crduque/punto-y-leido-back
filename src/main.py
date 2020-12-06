@@ -2,7 +2,7 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, make_response
+from flask import Flask, request, jsonify, url_for, make_response, request
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from flask_cors import CORS
@@ -172,13 +172,15 @@ def get_shelves():
     else:
         return "Self not found", 400
 
-# @app.route("/book/<title>", methods=['GET'])
+@app.route('/books/', methods=['GET'])
 # def get_book_by_title(title):
-#     book = Book.read_by_title(title)
-#     if book:
-#         return jsonify(book), 200
-#     else:
-#         return "Book not found", 400
+def book():
+    
+    args = request.args
+
+    if 'title' in request.args:
+        Book.ready_by_title(title_input) = request.args.get('title')
+        return 'book found', 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
