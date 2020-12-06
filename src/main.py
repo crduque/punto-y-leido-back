@@ -88,30 +88,34 @@ def get_all_readers():
 
 @app.route('/books', methods=['GET'])
 def get_all_books():  
-    books = Book.read_all()
-    authors = Author.read_all()
-    books_written_by_authors = db.session.query(written_by).all()
-
-    result = []   
-    for book_author in books_written_by_authors:
-        for book in books:
-            for author in authors:
-                if book["id"] == book_author[1]:
-                    if author["id"] == book_author[0]:
-                        book_data = {}   
-                        book_data['id'] = book["id"] 
-                        book_data['title'] = book["title"] 
-                        book_data["image"] = book["image"]
-                        book_data["synopsis"] = book["synopsis"]
-                        book_data["format_type"] = book["format_type"]
-                        book_data["genre"] = book["genre"]
-                        book_data["price"] = book["price"]
-                        book_data["id_author"] = author["id"]
-                        book_data["name_author"] = author["name"]
-            
-                        result.append(book_data)
-
-    return jsonify(result)
+    args = request.args
+    if "title" in args:
+        title = args["title"]
+        book = Book.read_by_title(title)
+        return jsonify(book), 200
+    else:
+        books = Book.read_all()
+        authors = Author.read_all()
+        books_written_by_authors = db.session.query(written_by).all()
+        result = []   
+        for book_author in books_written_by_authors:
+            for book in books:
+                for author in authors:
+                    if book["id"] == book_author[1]:
+                        if author["id"] == book_author[0]:
+                            book_data = {}   
+                            book_data['id'] = book["id"] 
+                            book_data['title'] = book["title"] 
+                            book_data["image"] = book["image"]
+                            book_data["synopsis"] = book["synopsis"]
+                            book_data["format_type"] = book["format_type"]
+                            book_data["genre"] = book["genre"]
+                            book_data["price"] = book["price"]
+                            book_data["id_author"] = author["id"]
+                            book_data["name_author"] = author["name"]
+                
+                            result.append(book_data)
+        return jsonify(result)
     
 @app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
 def get_all_shelves(reader_id, shelf_name):
@@ -172,15 +176,6 @@ def get_shelves():
     else:
         return "Self not found", 400
 
-# @app.route('/books/', methods=['GET'])
-# def get_book_by_title(title):
-# def book():
-    
-#     args = request.args
-
-#     if 'title' in request.args:
-#         Book.ready_by_title(title_input) = request.args.get('title')
-#         return 'book found', 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
