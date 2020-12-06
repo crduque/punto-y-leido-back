@@ -172,6 +172,14 @@ def get_shelves():
     else:
         return "Self not found", 400
 
+# @app.route("/book/<title>", methods=['GET'])
+# def get_book_by_title(title):
+#     book = Book.read_by_title(title)
+#     if book:
+#         return jsonify(book), 200
+#     else:
+#         return "Book not found", 400
+
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
     PORT = int(os.environ.get('PORT', 3000))

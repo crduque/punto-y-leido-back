@@ -158,6 +158,11 @@ class Book(db.Model):
         books = list(map(lambda x: x.serialize(), all_books))
         return books
 
+    @classmethod
+    # def ready_by_title(cls, title_input)
+    #     book_by_title = cls.query.filter_by(title = title_input)
+    #     return book_by_title
+
 class Author(db.Model):
     __tablename__ = "author"
     id = Column(Integer, primary_key=True)
