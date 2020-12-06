@@ -172,15 +172,15 @@ def get_shelves():
     else:
         return "Self not found", 400
 
-@app.route('/books/', methods=['GET'])
+# @app.route('/books/', methods=['GET'])
 # def get_book_by_title(title):
-def book():
+# def book():
     
-    args = request.args
+#     args = request.args
 
-    if 'title' in request.args:
-        Book.ready_by_title(title_input) = request.args.get('title')
-        return 'book found', 200
+#     if 'title' in request.args:
+#         Book.ready_by_title(title_input) = request.args.get('title')
+#         return 'book found', 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
