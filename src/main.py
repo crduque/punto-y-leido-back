@@ -71,7 +71,7 @@ def login():
 @app.route('/readers', methods=['GET'])
 def get_all_readers():  
     readers = Reader.read_all() 
-    result = []   
+    result = []
 
     for reader in readers:
         print(reader) 
@@ -85,21 +85,6 @@ def get_all_readers():
         result.append(reader_data)   
 
     return jsonify(result)
-   readers = Reader.read_all()
-
-   result = []   
-
-   for reader in readers:   
-       reader_data = {}   
-       reader_data['id'] = reader.id  
-       reader_data['email'] = reader.email 
-       reader_data["username"] = reader.username
-       reader_data["name"] = reader.name
-       reader_data["description"] = reader.description
-       
-       result.append(reader_data)   
-
-   return jsonify(result)
 
 @app.route('/books', methods=['GET'])
 def get_all_books():  
@@ -186,6 +171,16 @@ def get_shelves():
         return jsonify(all_shelves), 200
     else:
         return "Self not found", 400
+
+@app.route('/profile/<int:id_reader>', methods=['PUT'])
+# @token_required
+def update_reader(id_reader):
+    body=request.get_json()
+    try:
+        reader_to_update = Reader.update(id_reader, body["name"], body["description"])
+        return reader_to_update.serialize()
+    except:
+        return "Couldn't update reader information", 404
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

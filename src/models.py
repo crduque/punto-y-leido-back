@@ -121,10 +121,12 @@ class Reader(db.Model):
         reader = Reader.query.filter_by(email=email).first()
         return reader
 
-    @classmethod
-    def read_all(cls):
-        readers = Reader.query.all()
-        return readers
+    def update(id_reader, name, description):
+        reader_to_update = Reader.query.filter_by(id= id_reader).first()
+        reader_to_update.name = name
+        reader_to_update.description = description
+        db.session.commit()
+        return reader_to_update
 
 class Book(db.Model):
     __tablename__= "book"
