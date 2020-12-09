@@ -112,6 +112,39 @@ def get_all_books():
                         result.append(book_data)
 
     return jsonify(result)
+
+@app.route('/reviews', methods=['GET'])
+def get_all_reviews():  
+    reviews = Review.read_all()
+    readers = Reader.read_all()
+
+    result = []   
+
+    for review in reviews:
+        for reader in readers:
+            if reader["id"] == review["id_reader"]:
+                review_data = {}   
+                review_data['id'] = review["id"] 
+                review_data['id_reader'] = review["id_reader"] 
+                review_data["id_book"] = review["id_book"]
+                review_data["stars"] = review["stars"]
+                review_data["review"] = review["review"]
+                review_data["username"] = reader["username"]
+       
+                result.append(review_data)
+    
+    return jsonify(result)
+
+@app.route("/add_review", methods=["POST"])
+def create_review():
+    body = request.get_json()  
+
+    new_review = Review(id_reader=body["id_reader"], id_book=body["id_book"], stars=body["stars"], review=body["review"]) 
+
+    new_review.create()    
+
+    return new_review.serialize(), 200
+
     
 @app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
 def get_all_shelves(reader_id, shelf_name):
