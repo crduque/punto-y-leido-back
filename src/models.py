@@ -159,8 +159,8 @@ class Book(db.Model):
         return books
 
     @classmethod
-    def read_by_title(cls, title):
-        books_by_title = Book.query.filter_by(title = title)
+    def read_like_title(cls, title):
+        books_by_title = Book.query.filter(Book.title.like(title)).all()
         books = list(map(lambda x: x.serialize(), books_by_title))
         return books
 

@@ -91,7 +91,8 @@ def get_all_books():
     args = request.args
     if "title" in args:
         title = args["title"]
-        book = Book.read_by_title(title)
+        title = f"%{title}%"
+        book = Book.read_like_title(title)
         return jsonify(book), 200
     else:
         books = Book.read_all()
