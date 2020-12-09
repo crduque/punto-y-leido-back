@@ -87,7 +87,7 @@ def get_all_readers():
    return jsonify(result)
 
 @app.route('/books', methods=['GET'])
-def get_all_books():  
+def get_all_books(): 
     args = request.args
     if "title" in args:
         title = args["title"]
