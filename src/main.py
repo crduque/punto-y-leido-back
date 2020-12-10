@@ -176,10 +176,10 @@ def get_shelves():
 # @token_required
 def update_reader(id_reader):
     body=request.get_json()
-    try:
-        reader_to_update = Reader.update(id_reader, body["name"], body["description"])
+    reader_to_update = Reader.update(id_reader, body["name"], body["description"])
+    if reader_to_update:
         return reader_to_update.serialize()
-    except:
+    else:
         return "Couldn't update reader information", 404
 
 # this only runs if `$ python src/main.py` is executed
