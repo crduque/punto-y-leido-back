@@ -37,7 +37,7 @@ def handle_invalid_usage(error):
 def sitemap():
     return generate_sitemap(app)
 
-@app.route('/register', methods=['GET', 'POST'])
+@app.route('/register', methods=['POST'])
 def register():  
     body = request.get_json()  
 
@@ -120,6 +120,7 @@ def get_all_books():
         return jsonify(result)
     
 @app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
+@cross_origin()
 def get_all_shelves(reader_id, shelf_name):
     books_in_shelf = Shelf.read_by_reader_and_name(shelf_name, reader_id)
 
@@ -136,7 +137,8 @@ def read_all_shelves():
     except:
         return 'not foun', 400
 
-@app.route('/<reader_id>/<shelf_name>/<book_id>', methods=['POST'])
+@app.route('/<int:reader_id>/<shelf_name>/<int:book_id>', methods=['POST'])
+@cross_origin()
 def add_to_shelf(reader_id,shelf_name,book_id):
 
     new_book_in_shelf=Shelf(id_reader=reader_id, shelf_name=shelf_name, id_book=book_id)
@@ -146,6 +148,7 @@ def add_to_shelf(reader_id,shelf_name,book_id):
     return jsonify(new_book_in_shelf.serialize())
 
 @app.route('/<id_reader>/<shelf_name>/<id_book>' , methods=['DELETE'])
+@cross_origin()
 def delete_book_of_shelf(id_reader,shelf_name,id_book):
     delete_book = Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
     print("libro borrado, ", delete_book)
