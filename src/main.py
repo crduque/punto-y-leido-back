@@ -2,10 +2,10 @@
 This module takes care of starting the API Server, Loading the DB and Adding the endpoints
 """
 import os
-from flask import Flask, request, jsonify, url_for, make_response
+from flask import Flask, request, jsonify, url_for, make_response, request
 from flask_migrate import Migrate
 from flask_swagger import swagger
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
 from models import db, Reader, Author, Book, Review, Order, Shelf, written_by
@@ -87,31 +87,37 @@ def get_all_readers():
     return jsonify(result)
 
 @app.route('/books', methods=['GET'])
-def get_all_books():  
-    books = Book.read_all()
-    authors = Author.read_all()
-    books_written_by_authors = db.session.query(written_by).all()
-
-    result = []   
-    for book_author in books_written_by_authors:
-        for book in books:
-            for author in authors:
-                if book["id"] == book_author[1]:
-                    if author["id"] == book_author[0]:
-                        book_data = {}   
-                        book_data['id'] = book["id"] 
-                        book_data['title'] = book["title"] 
-                        book_data["image"] = book["image"]
-                        book_data["synopsis"] = book["synopsis"]
-                        book_data["format_type"] = book["format_type"]
-                        book_data["genre"] = book["genre"]
-                        book_data["price"] = book["price"]
-                        book_data["id_author"] = author["id"]
-                        book_data["name_author"] = author["name"]
-            
-                        result.append(book_data)
-
-    return jsonify(result)
+@cross_origin()
+def get_all_books(): 
+    args = request.args
+    if "title" in args:
+        title = args["title"]
+        title = f"%{title}%"
+        book = Book.read_like_title(title)
+        return jsonify(book), 200
+    else:
+        books = Book.read_all()
+        authors = Author.read_all()
+        books_written_by_authors = db.session.query(written_by).all()
+        result = []   
+        for book_author in books_written_by_authors:
+            for book in books:
+                for author in authors:
+                    if book["id"] == book_author[1]:
+                        if author["id"] == book_author[0]:
+                            book_data = {}   
+                            book_data['id'] = book["id"] 
+                            book_data['title'] = book["title"] 
+                            book_data["image"] = book["image"]
+                            book_data["synopsis"] = book["synopsis"]
+                            book_data["format_type"] = book["format_type"]
+                            book_data["genre"] = book["genre"]
+                            book_data["price"] = book["price"]
+                            book_data["id_author"] = author["id"]
+                            book_data["name_author"] = author["name"]
+                
+                            result.append(book_data)
+        return jsonify(result)
     
 @app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
 def get_all_shelves(reader_id, shelf_name):
@@ -150,11 +156,18 @@ def delete_book_of_shelf(id_reader,shelf_name,id_book):
         
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
-    try:
-        all_authors = Author.read_all()
-        return jsonify(all_authors), 200
-    except:
-        return "Do not found authors", 400
+    args = request.args
+    if "name" in args:
+        name = args["name"]
+        name = f"%{name}%"
+        author = Author.read_like_author(name)
+        return jsonify(author), 200
+    else:
+        try:
+            all_authors = Author.read_all()
+            return jsonify(all_authors), 200
+        except:
+            return "Do not found authors", 400
 
 @app.route("/author/<name_input>", methods=["GET"])
 def get_author(name_input):

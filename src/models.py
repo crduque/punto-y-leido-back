@@ -166,6 +166,12 @@ class Book(db.Model):
         books = list(map(lambda x: x.serialize(), all_books))
         return books
 
+    @classmethod
+    def read_like_title(cls, title):
+        books_by_title = Book.query.filter(Book.title.like(title)).all()
+        books = list(map(lambda x: x.serialize(), books_by_title))
+        return books
+
 class Author(db.Model):
     __tablename__ = "author"
     id = Column(Integer, primary_key=True)
@@ -192,6 +198,12 @@ class Author(db.Model):
     def read(cls, name_input):
         author = cls.query.filter_by(name = name_input)
         return author.serialize()
+
+    @classmethod
+    def read_like_author(cls, name):
+        info_from_author = Author.query.filter(Author.name.like(name)).all()
+        authors = list(map(lambda x: x.serialize(), info_from_author))
+        return authors
 
 class Order(db.Model):
     __tablename__= "order"
