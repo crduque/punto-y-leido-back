@@ -111,7 +111,8 @@ class Reader(db.Model):
         db.session.add(new_user)  
         db.session.commit()    
 
-    def read_by_email(email):
+    @classmethod
+    def read_by_email(cls, email):
         reader = Reader.query.filter_by(email=email).first()
         return reader
 
