@@ -191,6 +191,12 @@ class Author(db.Model):
         author = cls.query.filter_by(name = name_input)
         return author.serialize()
 
+    @classmethod
+    def read_like_author(cls, name):
+        info_from_author = Author.query.filter(Author.name.like(name)).all()
+        authors = list(map(lambda x: x.serialize(), info_from_author))
+        return authors
+
 class Order(db.Model):
     __tablename__= "order"
     id = Column(Integer, primary_key=True)

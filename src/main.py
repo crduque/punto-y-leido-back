@@ -5,7 +5,7 @@ import os
 from flask import Flask, request, jsonify, url_for, make_response, request
 from flask_migrate import Migrate
 from flask_swagger import swagger
-from flask_cors import CORS
+from flask_cors import CORS, cross_origin
 from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
 from models import db, Reader, Author, Book, Review, Order, Shelf, written_by
@@ -87,6 +87,7 @@ def get_all_readers():
    return jsonify(result)
 
 @app.route('/books', methods=['GET'])
+@cross_origin()
 def get_all_books(): 
     args = request.args
     if "title" in args:
@@ -155,11 +156,18 @@ def delete_book_of_shelf(id_reader,shelf_name,id_book):
         
 @app.route('/authors', methods=['GET'])
 def get_all_authors():
-    try:
-        all_authors = Author.read_all()
-        return jsonify(all_authors), 200
-    except:
-        return "Do not found authors", 400
+    args = request.args
+    if "name" in args:
+        name = args["name"]
+        name = f"%{name}%"
+        author = Author.read_like_author(name)
+        return jsonify(author), 200
+    else:
+        try:
+            all_authors = Author.read_all()
+            return jsonify(all_authors), 200
+        except:
+            return "Do not found authors", 400
 
 @app.route("/author/<name_input>", methods=["GET"])
 def get_author(name_input):
