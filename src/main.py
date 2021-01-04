@@ -162,7 +162,7 @@ def get_all_authors():
     args = request.args
     if "name" in args:
         name = args["name"]
-        # name = f"%{name}%"
+        name = f"%{name}%"
         author = Author.read_like_author(name)
         return jsonify(author), 200
     else:
