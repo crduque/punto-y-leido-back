@@ -85,6 +85,7 @@ class Shelf(db.Model):
 class Reader(db.Model):
     __tablename__= "reader"
     id = Column(Integer, primary_key=True)
+    image = Column(Text(), nullable=True)
     username = Column(String(80), unique=True, nullable=False)
     email = Column(String(120), unique=True, nullable=False)
     password = Column(String(80), nullable=False)
