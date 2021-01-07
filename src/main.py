@@ -220,15 +220,15 @@ def get_all_reviews():
     
     return jsonify(result)
 
-# @app.route('/add_review', methods=['POST'])
-# def add_review():  
-#     body = request.get_json()  
+@app.route('/add_review', methods=['POST'])
+def add_review():  
+    body = request.get_json()  
 
-#     new_review = Review(id_reader=body['id_reader'], id_book=body["id_book"], stars=body["stars"], review=body["review"])
+    new_review = Review(id_reader=body['id_reader'], id_book=body["id_book"], stars=body["stars"], review=body["review"])
 
-#     Review.create(new_review)
+    Review.create(new_review)
 
-#     return jsonify({'message': 'Review created correctly'}), 200
+    return jsonify({'message': 'Review created correctly'}), 200
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
