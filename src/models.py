@@ -38,6 +38,10 @@ class Review(db.Model):
             "review": self.review
         }
 
+    def create(new_review):
+        db.session.add(new_review)  
+        db.session.commit()
+
     @classmethod
     def read_all(cls):
         get_all_reviews = Review.query.all()
