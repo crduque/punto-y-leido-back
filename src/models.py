@@ -38,6 +38,12 @@ class Review(db.Model):
             "review": self.review
         }
 
+    @classmethod
+    def read_all(cls):
+        get_all_reviews = Review.query.all()
+        reviews = list(map(lambda x: x.serialize(), get_all_reviews))
+        return reviews
+
 class Shelf(db.Model):
     __tablename__= "shelf"
     id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
