@@ -74,7 +74,6 @@ def get_all_readers():
     result = []
 
     for reader in readers:
-        print(reader) 
         reader_data = {}   
         reader_data['id'] = reader["id"]  
         reader_data['email'] = reader["email"] 
