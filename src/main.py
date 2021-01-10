@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS, cross_origin
 from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
-from models import db, Reader, Author, Book, Review, Order, Shelf, written_by
+from models import db, Reader, Author, Book, Review, Order, Shelf, written_by, follower
 from init_database import init_db
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -218,6 +218,14 @@ def get_all_reviews():
                 result.append(review_data)
     
     return jsonify(result)
+
+@app.route("/following/<int:id_user_logged>", methods=["POST"])
+def add_follower(id_user_logged):
+    body=request.get_json()
+    statement = follower.insert().values(id_follower=id_user_logged, id_followed=body["id_followed"])
+    db.session.execute(statement)
+    db.session.commit()
+    return jsonify({"message": "Logged user is following a new user!"}), 200
 
 @app.route('/add_review', methods=['POST'])
 def add_review():  
