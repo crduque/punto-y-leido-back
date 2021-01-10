@@ -219,14 +219,6 @@ def get_all_reviews():
     
     return jsonify(result)
 
-@app.route("/following/<int:id_user_logged>", methods=["POST"])
-def add_follower(id_user_logged):
-    body=request.get_json()
-    statement = follower.insert().values(id_follower=id_user_logged, id_followed=body["id_followed"])
-    db.session.execute(statement)
-    db.session.commit()
-    return jsonify({"message": "Logged user is following a new user!"}), 200
-
 @app.route('/add_review', methods=['POST'])
 def add_review():  
     body = request.get_json()  
@@ -236,6 +228,33 @@ def add_review():
     Review.create(new_review)
 
     return jsonify({'message': 'Review created correctly'}), 200
+
+@app.route("/following/<int:id_user_logged>", methods=["POST"])
+def add_follower(id_user_logged):
+    body=request.get_json()
+    statement = follower.insert().values(id_follower=id_user_logged, id_followed=body["id_followed"])
+    db.session.execute(statement)
+    db.session.commit()
+    return jsonify({"message": "Logged user is following a new user!"}), 200
+
+@app.route("/following_followed", methods=["GET"])
+@cross_origin()
+def read_followers():
+    readers = Reader.read_all()
+    followers = db.session.query(follower).all()
+    result = []
+    for each_follower in followers:
+        for reader in readers:
+            if reader["id"] == each_follower[1]:
+                follower_data = {}
+                follower_data["id_follower"] = each_follower[0]
+                follower_data["id_followed"] = each_follower[1]
+                follower_data["username_followed"] = reader["username"]
+                result.append(follower_data)
+
+    return jsonify(result)
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
