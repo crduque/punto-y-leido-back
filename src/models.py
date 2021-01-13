@@ -118,6 +118,10 @@ class Reader(db.Model):
             "orders": self.orders
         }
     
+    def read_username_by_id(id_reader):
+        reader = Reader.query.filter_by(id = id_reader).first()
+        return reader.username
+
     @classmethod
     def read_all(cls):
         readers = Reader.query.all()

@@ -242,14 +242,18 @@ def add_follower(id_user_logged):
 def read_followers():
     readers = Reader.read_all()
     followers = db.session.query(follower).all()
+    each_data = []
     result = []
     for each_follower in followers:
         for reader in readers:
+            follower_data = {}
+            follower_username = Reader.read_username_by_id(each_follower[0])
             if reader["id"] == each_follower[1]:
-                follower_data = {}
-                follower_data["id_follower"] = each_follower[0]
                 follower_data["id_followed"] = each_follower[1]
                 follower_data["username_followed"] = reader["username"]
+                follower_data["id_follower"] = each_follower[0]
+                follower_data["username_follower"] = follower_username
+            
                 result.append(follower_data)
 
     return jsonify(result)
