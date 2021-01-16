@@ -74,7 +74,6 @@ def get_all_readers():
     result = []
 
     for reader in readers:
-        print(reader) 
         reader_data = {}   
         reader_data['id'] = reader["id"]  
         reader_data['email'] = reader["email"] 
@@ -118,6 +117,37 @@ def get_all_books():
                 
                             result.append(book_data)
         return jsonify(result)
+
+@app.route('/books_by_genre', methods=['GET'])
+@cross_origin()
+def get_books_by_genre():
+    books = Book.read_all()
+    result = []
+    for book in books:
+        book_data = {}
+        array_of_books = []
+        if book["genre"] == "Histórica":
+            book_data["Histórica"] = array_of_books.append(book["id"])
+        if book["genre"] == "Clásicos":
+            book_data["Clásicos"] = array_of_books.append(book["id"])
+        if book["genre"] == "Romántica y erótica":
+            book_data["Romántica y erótica"] = array_of_books.append(book["id"])
+        if book["genre"] == "Juvenil":
+            book_data["Juvenil"] = array_of_books.append(book["id"])
+        if book["genre"] == "Thriller":
+            book_data["Thriller"] = array_of_books.append(book["id"])
+        if book["genre"] == "Biográfica":
+            book_data["Biográfica"] = array_of_books.append(book["id"])
+        if book["genre"] == "Ciencia ficción y fantástica":
+            book_data["Ciencia ficción y fantástica"] = array_of_books.append(book["id"])
+        if book["genre"] == "Novela gráfica":
+            book_data["Novela gráfica"] = array_of_books.append(book["id"])
+
+        result.append(book_data)
+    print(result)
+    return jsonify(result)
+
+
     
 @app.route('/<reader_id>/<shelf_name>/books', methods=['GET'])
 @cross_origin()
