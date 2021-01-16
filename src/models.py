@@ -20,9 +20,9 @@ follower = Table("follower", db.Model.metadata,
 
 class Review(db.Model):
     __tablename__ = "review"
-    id = Column(Integer, primary_key=True)
-    id_reader = Column(Integer, ForeignKey("reader.id"), primary_key=True)
-    id_book = Column(Integer, ForeignKey("book.id"), primary_key=True)
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    id_reader = Column(Integer, ForeignKey("reader.id"), nullable=False, unique=False)
+    id_book = Column(Integer, ForeignKey("book.id"), nullable=False, unique=False)
     stars = Column(Enum("1", "2", "3", "4", "5"), nullable=False)
     review = Column(Text(), nullable=True)
     # relations
@@ -118,6 +118,10 @@ class Reader(db.Model):
             "orders": self.orders
         }
     
+    def read_username_by_id(id_reader):
+        reader = Reader.query.filter_by(id = id_reader).first()
+        return reader.username
+
     @classmethod
     def read_all(cls):
         readers = Reader.query.all()

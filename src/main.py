@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS, cross_origin
 from utils import APIException, generate_sitemap, token_required
 from admin import setup_admin
-from models import db, Reader, Author, Book, Review, Order, Shelf, written_by
+from models import db, Reader, Author, Book, Review, Order, Shelf, written_by, follower
 from init_database import init_db
 import jwt
 from werkzeug.security import generate_password_hash, check_password_hash
@@ -250,15 +250,46 @@ def get_all_reviews():
     
     return jsonify(result)
 
-# @app.route('/add_review', methods=['POST'])
-# def add_review():  
-#     body = request.get_json()  
+@app.route('/add_review', methods=['POST'])
+def add_review():  
+    body = request.get_json()  
 
-#     new_review = Review(id_reader=body['id_reader'], id_book=body["id_book"], stars=body["stars"], review=body["review"])
+    new_review = Review(id_reader=body['id_reader'], id_book=body["id_book"], stars=body["stars"], review=body["review"])
 
-#     Review.create(new_review)
+    Review.create(new_review)
 
-#     return jsonify({'message': 'Review created correctly'}), 200
+    return jsonify({'message': 'Review created correctly'}), 200
+
+@app.route("/following/<int:id_user_logged>", methods=["POST"])
+def add_follower(id_user_logged):
+    body=request.get_json()
+    statement = follower.insert().values(id_follower=id_user_logged, id_followed=body["id_followed"])
+    db.session.execute(statement)
+    db.session.commit()
+    return jsonify({"message": "Logged user is following a new user!"}), 200
+
+@app.route("/following_followed", methods=["GET"])
+@cross_origin()
+def read_followers():
+    readers = Reader.read_all()
+    followers = db.session.query(follower).all()
+    each_data = []
+    result = []
+    for each_follower in followers:
+        for reader in readers:
+            follower_data = {}
+            follower_username = Reader.read_username_by_id(each_follower[0])
+            if reader["id"] == each_follower[1]:
+                follower_data["id_followed"] = each_follower[1]
+                follower_data["username_followed"] = reader["username"]
+                follower_data["id_follower"] = each_follower[0]
+                follower_data["username_follower"] = follower_username
+            
+                result.append(follower_data)
+
+    return jsonify(result)
+
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':
