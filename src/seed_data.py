@@ -357,34 +357,38 @@ data = {
             "id_book": 11
         },
     ],
-    "Review": [
+    "follower":[
         {
-            "id": 5,
-            "id_reader": 1,
-            "id_book": 18,
-            "stars": "5",
-            "review": "Primero de una de mis trilogías de fantasía preferida. Es una maravilla, tanto cómo se desarrollan los personajes los personajes como el desarrollo de la historia en los tres libros. Totalmente recomendado.",
+            "id_follower": 1,
+            "id_followed": 2
         },
         {
-            "id": 2,
-            "id_reader": 6,
-            "id_book": 1,
-            "stars": "4",
-            "review": "Trepidante novela histórica que te hace admirar a una mujer que fue muy poderosa en un momento de la historia en el que parecía imposible que esto sucediera. También es destacable la narrativa de las batallas.",
+            "id_follower": 2,
+            "id_followed": 3
         },
         {
-            "id": 3,
-            "id_reader": 2,
-            "id_book": 14,
-            "stars": "5",
-            "review": "Novela histórica que transmite la verdadera esencia de América Latina sin tener la necesidad de viajar hasta allí. Recomendada 100%.",
+            "id_follower": 3,
+            "id_followed": 4
         },
         {
-            "id": 4,
-            "id_reader": 7,
-            "id_book": 12,
-            "stars": "4",
-            "review": "Historia adelantada a su época, con una autora pionera en la escritura sagaz.",
+            "id_follower": 4,
+            "id_followed": 5
+        },
+        {
+            "id_follower": 5,
+            "id_followed": 6
+        },
+        {
+            "id_follower": 6,
+            "id_followed": 7
+        },
+        {
+            "id_follower": 7,
+            "id_followed": 1
+        },
+        {
+            "id_follower": 6,
+            "id_followed": 1
         },
     ],
     "Shelf":[

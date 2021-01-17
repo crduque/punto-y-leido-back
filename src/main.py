@@ -150,7 +150,6 @@ def add_to_shelf(reader_id,shelf_name,book_id):
 @cross_origin()
 def delete_book_of_shelf(id_reader,shelf_name,id_book):
     delete_book = Shelf.delete_book_on_shelf(id_reader, shelf_name, id_book)
-    print("libro borrado, ", delete_book)
     if delete_book is None:
         return "Do not found book in this shelf", 400
     else: 
