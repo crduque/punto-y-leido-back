@@ -130,7 +130,7 @@ data = {
         },
         {
             "id": 7,
-            "image": "https://static.carrefour.es/hd_510x_/crs/cdn_static/catalog/hd/349040_00_1.jpg",
+            "image": "https://static3planetadelibroscom.cdnstatics.com/usuaris/libros/fotos/310/m_libros/portada_tu-y-otros-desastres-naturales_maria-martinez_202002121313.jpg",
             "title": "Tú y otros desastres naturales",
             "synopsis": "Harper ha planificado hasta el último detalle de su futuro. Pronto acabará sus estudios y logrará el trabajo por el que tanto se ha esforzado. Tendrá la vida que desea. Sin embargo, una triste pérdida hará que su plan perfecto, aquello que creía querer más que nada, se transforme de nuevo en confusión, dudas e inseguridades. Porque los secretos no pueden guardarse para siempre. Porque hay caminos destinados a cruzarse. Porque una sola decisión puede cambiarlo todo y nada da más miedo que arriesgarse por tus sueños. Porque la vida no se trata de sobrevivir a la tormenta, sino de aprender a bailar bajo ella.",
             "format_type": "Tapa blanda",
@@ -193,7 +193,7 @@ data = {
         },
         {
             "id": 18,
-            "image": "https://cdn.grupoelcorteingles.es/SGFM/dctm/MEDIA03/201807/05/00106520608552____7__640x640.jpg",
+            "image": "https://imagessl8.casadellibro.com/a/l/t7/38/9788498726138.jpg",
             "title": "El imperio final (Nacidos de la bruma I)",
             "synopsis": "Durante mil años han caído cenizas del cielo. Durante mil años nada ha florecido. Durante mil años los skaa han sido esclavizados y viven en la miseria, sumidos en un miedo inevitable. Durante mil años el Lord Legislador ha reinado con poder absoluto, dominando gracias al terror, a sus poderes y a su inmortalidad, ayudado por «obligadores» e «inquisidores», junto a la poderosa magia de la alomancia. Pero los nobles a menudo han tenido trato sexual con jóvenes skaa y, aunque la ley lo prohíbe, algunos de sus bastardos han sobrevivido y heredado los poderes alománticos: son los «nacidos de la bruma» (mistborn). Ahora, Kelsier, el «superviviente», el único que ha logrado huir de los Pozos de Hathsin, ha encontrado a Vin, una pobre chica skaa con mucha suerte... Tal vez los dos, con el mejor equipo criminal jamás reunido, unidos a la rebelión que los skaa intentan desde hace mil años, logren cambiar el mundo y acabar con la atroz mano de hierro del Lord Legislador. Pero, ¿qué pasa si el héroe de la profecía falla?",
             "format_type": "Tapa dura",
@@ -236,7 +236,7 @@ data = {
             "id": 3,
             "name": "Audrey Carlan",
             "biography": "Audrey Carlan ha alcanzado el número 1 en las listas de libros más vendidos de The New York Times, USA Today, y The Wall Street Journal. conviertiéndose en pocos meses en la autora revelación de la novela romántica. Entre sus obras se encuentra las series Calendar Girl, Falling y la trilogía Trinity.   Vive en el valle de California, donde disfruta de sus dos hijos y del amor de su vida. Cuando no está escribiendo, puedes encontrarla enseñando yoga, tomándose unos vinos con sus amigas del alma o con la nariz enterrada en una novela romántica calentita calentita. ",
-            "image": ""
+            "image": "https://ep00.epimg.net/cultura/imagenes/2016/09/21/actualidad/1474481473_476497_1474482388_noticia_normal.jpg"
         },
         {
             "id": 4,
@@ -254,7 +254,7 @@ data = {
             "id": 6,
             "name": "Laura Gallego García",
             "biography": "Laura Gallego García (Cuart de Poblet, Valencia; 11 de octubre de 1977) es una autora española de literatura infantil y juvenil, especializada en temática fantástica. Ha estudiado Filología Hispánica en la Universidad de Valencia. Hasta el año 2019 ha escrito un total de 41 libros, siendo una referente en lecturas juveniles.",
-            "image": "https://static.wikia.nocookie.net/biblioteca-virtual-de-literatura/images/b/b8/Laura_Gallego_Garc%C3%ADa.jpg/revision/latest?cb=20200114232126&path-prefix=es"
+            "image": "https://traslasportadas.files.wordpress.com/2013/03/laura-gallego.jpg"
         },
         {
             "id": 8,
